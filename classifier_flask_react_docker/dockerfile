@@ -1,0 +1,25 @@
+FROM ubuntu:20.04
+
+MAINTAINER Hatem Rizk "hatem.rizk@gmail.com"
+
+ENV TZ=America/Los_Angeles
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update -y && apt-get install -y python3-pip python-dev nvidia-cuda-toolkit libcudart10.1
+
+COPY ./requirements.txt /app/requirements.txt
+
+WORKDIR /app
+
+RUN pip3 install -r requirements.txt
+
+COPY . /app
+
+EXPOSE 5000
+
+ENTRYPOINT [ "python3" ]
+
+CMD [ "app.py" ]
+
+
